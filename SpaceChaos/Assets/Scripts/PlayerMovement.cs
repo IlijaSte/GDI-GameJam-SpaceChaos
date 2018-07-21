@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour {
         if (Input.GetKey(KeyCode.UpArrow))
         {
             GetComponent<Rigidbody2D>().AddForce(Vector2.up * ForceMultiplier, ForceMode2D.Force);
-
+            GameManager.I.FuelReduction();
         }
 
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -27,5 +27,19 @@ public class PlayerMovement : MonoBehaviour {
             GetComponent<Rigidbody2D>().AddForce(Vector2.right * ForceMultiplier / 2f, ForceMode2D.Force);
         }
 
+    }
+   
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            if (collision.gameObject.CompareTag("Mineral"))
+            {
+                Destroy(collision.gameObject);
+                UIManager.I.Score.text = (++UIManager.I.score).ToString();
+                Debug.Log("Kolizija");
+            }
+        }
     }
 }
